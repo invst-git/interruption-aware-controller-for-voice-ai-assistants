@@ -31,8 +31,8 @@ def speak_and_monitor(player: AudioPlayer, listener: VADListener, pcm, sr):
                 print(f"  [!] User's speech ended ({duration:.2f}s) -- not acting yet (Step 4)")
                 interruption_in_progress = False
     if interruption_in_progress:
-        print("  [!] Playback finished while user was still talking -- "
-              "will pick up their full utterance next")
+        print("  [!] Playback finished while user was still talking -- discarding that open segment")
+        listener.discard_active_segment()
 
 
 def main():

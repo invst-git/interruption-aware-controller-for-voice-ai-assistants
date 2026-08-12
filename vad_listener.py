@@ -26,6 +26,18 @@ CHUNK_SAMPLES = 512  # required exact value for Silero VAD at 16kHz
 
 
 class VADListener:
+
+    def discard_active_segment(self):
+        """Throws away any speech segment that is still open. Resets
+        state to 'not active'. Use this after playback ends, if a
+        segment did not close in time. This makes the next
+        wait_for_utterance() call wait for a true, fresh turn. It will
+        not return old or echoed sound by mistake."""
+        with self._lock:
+            self._speech_active = False
+            self._current_segment_chunks = []
+            self._vad_iterator.reset_states()
+            
     def __init__(self, min_silence_duration_ms: int = 500):
         self._model = load_silero_vad(onnx=True)
         self._vad_iterator = VADIterator(
