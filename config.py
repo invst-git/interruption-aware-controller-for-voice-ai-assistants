@@ -1,8 +1,9 @@
 """config.py -- central settings for the CANDOR-FD voice pipeline."""
 import os
+from pathlib import Path
 from dotenv import load_dotenv
-
-load_dotenv()
+_PROJECT_ROOT = Path(__file__).resolve().parent
+load_dotenv(_PROJECT_ROOT / ".env")
 
 # --- LLM (Claude API) ---
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
@@ -19,8 +20,8 @@ SAMPLE_RATE = 16000
 VAD_MIN_SILENCE_MS = 500   # pause length before a turn counts as finished
 
 # --- TTS (Piper) ---
-PIPER_VOICE_MODEL = "en_US-lessac-medium.onnx"  # wherever download_voices put it
-
+# --- TTS (Piper) ---
+PIPER_VOICE_MODEL = str(_PROJECT_ROOT / "en_US-lessac-medium.onnx")
 # --- Assistant persona ---
 SYSTEM_PROMPT = (
     "You are a helpful, concise spoken voice assistant. Keep responses "
@@ -31,3 +32,4 @@ SYSTEM_PROMPT = (
 PARTIAL_CHECK_INTERVAL_S = 0.3   # how often to re-check in-progress speech during playback
 MIN_PARTIAL_AUDIO_S = 0.15       # skip clips shorter than this -- too short to hold a full word
 MAX_INTERRUPT_WAIT_S = 15        # safety cap: max wait for an interrupting turn to finish
+CONTINUATION_GRACE_S = 0.9  # after a pause, how long to wait for the user to keep talking before assuming they're done

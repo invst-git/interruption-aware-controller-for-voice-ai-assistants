@@ -4,7 +4,24 @@ against 557,864 real conversation turns. Not wired into the live loop
 until Step 4."""
 from dataclasses import dataclass, field
 from enum import Enum
+import re
 
+def _normalize_for_echo_check(text: str) -> str:
+    return re.sub(r"[^a-z0-9\s]", "", text.lower()).strip()
+
+def is_likely_echo(interrupt_text: str, assistant_reply: str, threshold: float = 0.6) -> bool:
+    """
+    Checks whether interrupt_text is suspiciously similar to what the
+    assistant itself just said -- a strong sign the mic picked up the
+    speaker, not a real voice. Word-overlap only, not real audio
+    analysis -- a safety net, not a replacement for true AEC.
+    """
+    interrupt_words = set(_normalize_for_echo_check(interrupt_text).split())
+    reply_words = set(_normalize_for_echo_check(assistant_reply).split())
+    if not interrupt_words:
+        return False
+    overlap = len(interrupt_words & reply_words) / len(interrupt_words)
+    return overlap >= threshold
 
 class TurnDecision(Enum):
     PENDING = "PENDING"
