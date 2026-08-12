@@ -27,3 +27,7 @@ SYSTEM_PROMPT = (
     "conversational and reasonably short, since you are being spoken aloud, "
     "not read as text. Avoid long lists or complex formatting."
 )
+
+PARTIAL_CHECK_INTERVAL_S = 0.3   # how often to re-check in-progress speech during playback
+MIN_PARTIAL_AUDIO_S = 0.15       # skip clips shorter than this -- too short to hold a full word
+MAX_INTERRUPT_WAIT_S = 15        # safety cap: max wait for an interrupting turn to finish
