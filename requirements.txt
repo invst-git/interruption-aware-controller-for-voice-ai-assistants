@@ -1,0 +1,29 @@
+# CANDOR-FD voice pipeline -- LOCAL side dependencies (the machine that
+# runs main.py: mic/speaker, VAD, ASR, TTS, orchestration).
+#
+# With NEURAL_CONTROLLER_MODE="remote" (the default, see config.py),
+# this machine does NOT need torch/transformers/CUDA at all -- the
+# neural model runs on Modal (see modal_controller.py) and this side
+# only makes an HTTPS call via `requests`. If you switch back to
+# NEURAL_CONTROLLER_MODE="local", also install requirements-local-neural.txt
+# (torch + transformers), matching your GPU driver's CUDA version if
+# you have one: https://pytorch.org/get-started/locally/
+
+numpy
+anthropic
+python-dotenv
+sounddevice
+faster-whisper
+silero-vad
+piper-tts
+requests
+
+# Confirmed from the installed package's dist-info on the dev machine
+# (C:\Side-Projects\voice-ai\voice-ai\Lib\site-packages\aec_audio_processing-1.0.1.dist-info):
+# PyPI project name is "aec-audio-processing" (imported as
+# aec_audio_processing), v1.0.1. It ships a compiled C++ extension
+# (swig/meson) with per-platform wheels -- pip will pull the manylinux
+# wheel automatically when this installs inside the Linux container, no
+# extra Dockerfile step needed as long as PyPI publishes one for the
+# base image's Python version.
+aec-audio-processing==1.0.1

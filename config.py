@@ -33,3 +33,18 @@ PARTIAL_CHECK_INTERVAL_S = 0.3   # how often to re-check in-progress speech duri
 MIN_PARTIAL_AUDIO_S = 0.15       # skip clips shorter than this -- too short to hold a full word
 MAX_INTERRUPT_WAIT_S = 15        # safety cap: max wait for an interrupting turn to finish
 CONTINUATION_GRACE_S = 0.9  # after a pause, how long to wait for the user to keep talking before assuming they're done
+MIN_RESUME_TAIL_S = 0.5     # false stop this close to the end of a reply isn't worth resuming
+AEC_STREAM_DELAY_MS = 50  # rough starting hint only -- AEC's own live control part adjusts from here
+USE_NEURAL_CONTROLLER = True   # flip to True once the benchmark and a live test both pass
+NEURAL_CONTROLLER_CHECKPOINT = "checkpoints/best_model_clean.pt"
+NEURAL_CONTROLLER_THRESHOLD = 0.5   # the untested default -- tune deliberately before relying on it
+DEBUG_TIMING = True   # timestamped VAD-event / classifier-decision / stop_speaking logging in main.py
+
+# --- Neural controller deployment: local torch process, or Modal's GPU
+# service over HTTPS (see modal_controller.py + neural_controller.py's
+# RemoteNeuralController). "remote" needs no torch/transformers/CUDA on
+# this machine at all -- only `requests` and the two env vars below.
+NEURAL_CONTROLLER_MODE = os.environ.get("NEURAL_CONTROLLER_MODE", "remote")  # "local" | "remote"
+MODAL_CONTROLLER_URL = os.environ.get("MODAL_CONTROLLER_URL", "")
+MODAL_CONTROLLER_API_KEY = os.environ.get("MODAL_CONTROLLER_API_KEY", "")
+NEURAL_REMOTE_TIMEOUT_S = 5.0   # per-call cap before falling back to the rule-based heuristic

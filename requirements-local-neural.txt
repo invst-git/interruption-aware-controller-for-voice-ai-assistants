@@ -1,0 +1,12 @@
+# Only needed if config.NEURAL_CONTROLLER_MODE="local" (running the
+# DeBERTa model in-process instead of via Modal). Not installed by
+# default, and not needed in the production Docker image, which uses
+# the "remote" mode.
+#
+# torch is deliberately unpinned/unversioned here: install it yourself
+# first, matching your hardware (CPU-only, or CUDA matching your local
+# GPU driver) -- see https://pytorch.org/get-started/locally/ -- THEN
+# install this file.
+transformers>=4.40
+sentencepiece   # required for DeBERTa-v3's tokenizer (spm.model)
+protobuf        # sentencepiece's own dependency for the same reason

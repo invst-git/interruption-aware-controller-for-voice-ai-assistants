@@ -1,6 +1,16 @@
 __pycache__/
-voice-ai/ 
+voice-ai/
 .env
 en_US-lessac-medium.onnx
 en_US-lessac-medium.onnx.json
 *.wav
+ideal_run.md
+
+# Model checkpoints and training data -- these are large binaries
+# (best_model_clean.pt and audit/checkpoints/best_model.pt are both
+# ~700MB) that exceed GitHub's 100MB per-file hard limit and don't
+# belong in git history regardless. checkpoints/ with no leading slash
+# matches at any depth, so this also covers audit/checkpoints/.
+checkpoints/
+*.parquet
+controller_training.zip

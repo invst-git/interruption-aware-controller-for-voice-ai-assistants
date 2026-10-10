@@ -1,0 +1,18 @@
+{
+  "results": [
+    {
+      "model": "Rule-based (v3 lexicon)",
+      "backchannel_recall_pct": 68.13243662700465,
+      "false_positive_rate_pct": 5.00893976996771
+    },
+    {
+      "model": "Neural (microsoft/deberta-v3-base)",
+      "backchannel_recall_pct": 97.6633902396965,
+      "false_positive_rate_pct": 8.8766133838586
+    }
+  ],
+  "pr_auc": 0.9974789931448417,
+  "roc_auc": 0.9752820804714329,
+  "n_test_prefixes": 124017,
+  "n_test_conversations": 167
+}

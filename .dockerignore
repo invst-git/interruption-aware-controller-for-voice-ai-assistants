@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.git/
+.env
+*.wav
+checkpoints/
+controller_training/
+controller_training.zip
+audit/
+test/
+scratchpad/
+en_US-lessac-medium.onnx
+en_US-lessac-medium.onnx.json
+comparison.json
+ideal_run.md
